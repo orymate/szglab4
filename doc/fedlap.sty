@@ -1,0 +1,83 @@
+% based on https://wiki.sch.bme.hu/pub/Infoalap/LaTeXSzglab4Tanacsok/fedlap.sty
+\usepackage{graphics}
+\usepackage{fullpage}
+\newcommand{\csapat}[2]{\newcommand{\tmpcsapat}{#1}\newcommand{\sorszam}{#2}}
+\newcommand{\anyag}[1]{\newcommand{\tmpanyag}{#1}}
+\newcommand{\konzulens}[1]{\newcommand{\tmpkonzulens}{#1}}
+
+\providecommand{\taga}[3]{}
+\providecommand{\tmptaga}{}
+\providecommand{\tmpneptuna}{}
+\providecommand{\tmpemaila}{}
+\renewcommand{\taga}[3]{\renewcommand{\tmptaga}{#1} 
+	\renewcommand{\tmpneptuna}{#2} 
+	\renewcommand{\tmpemaila}{#3}
+}
+
+\providecommand{\tagb}[3]{}
+\providecommand{\tmptagb}{}
+\providecommand{\tmpneptunb}{}
+\providecommand{\tmpemailb}{}
+\renewcommand{\tagb}[3]{\renewcommand{\tmptagb}{#1} 
+	\renewcommand{\tmpneptunb}{#2} 
+	\renewcommand{\tmpemailb}{#3}
+}
+
+\providecommand{\tagc}[3]{}
+\providecommand{\tmptagc}{}
+\providecommand{\tmpneptunc}{}
+\providecommand{\tmpemailc}{}
+\renewcommand{\tagc}[3]{\renewcommand{\tmptagc}{#1} 
+	\renewcommand{\tmpneptunc}{#2} 
+	\renewcommand{\tmpemailc}{#3}
+}
+
+\providecommand{\tagd}[3]{}
+\providecommand{\tmptagd}{}
+\providecommand{\tmpneptund}{}
+\providecommand{\tmpemaild}{}
+\renewcommand{\tagd}[3]{\renewcommand{\tmptagd}{#1} 
+	\renewcommand{\tmpneptund}{#2} 
+	\renewcommand{\tmpemaild}{#3}
+}
+
+\newcommand{\datum}[1]{\newcommand{\tmpdatum}{#1}}
+
+
+
+\newcommand{\fedlap}{
+\begin{titlepage}
+%\thispagestyle{empty} %\pagestyle{empty} A fedlap nem határozhatja meg az egész dokumentum stílusát
+
+	\begin{center}
+	\
+
+	\vspace{1cm}
+	\Huge{\textbf{\tmpanyag}}
+
+	\vspace{1cm}
+
+	\LARGE{\sorszam} -- \LARGE{\tmpcsapat}
+
+	\vspace{1cm}
+
+	\large{Konzulens:}\\
+	\LARGE{\tmpkonzulens}
+	\end{center}
+
+	\vfill
+
+	\begin{tabular}{l l l}
+	\multicolumn{3}{l}{\Large{Csapattagok}}\\
+	\tmptaga & \tmpneptuna & \tmpemaila \\
+	\tmptagb & \tmpneptunb & \tmpemailb \\
+	\tmptagc & \tmpneptunc & \tmpemailc \\
+	\tmptagd & \tmpneptund & \tmpemaild \\
+	\end{tabular}
+
+	\vspace{.5cm}
+	\hfill\large{\tmpdatum}
+	\normalsize % A betűméret visszaállítása eredti font méretre
+    \end{titlepage}
+}
+

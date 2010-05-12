@@ -1,0 +1,8 @@
+vim-ben:
+
+:'<,'>s/\n/XXXnewlineXXX/
+:s/subsub/^M/g
+:'<,'>sort
+:'<,'>s/\n/subsub/
+:s/XXXnewlineXXX/^M/g
+

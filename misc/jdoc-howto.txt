@@ -1,0 +1,9 @@
+latex.java kell hozzá
+javac -classpath /usr/lib/jvm/java-6-sun-1.6.0.15/lib/tools.jar latex.java
+
+
+repos/src$ mv build/latex.class . ; javadoc -doclet latex -classpath
+/usr/lib/jvm/java-6-sun-1.6.0.15/lib/tools.jar -private `ls *.java |grep -v
+Skel|gerp -v latex` | iconv -t latin2 | sed -e '1,/==== CUT/ d' >
+../doc/jdoc.tex && ( cd ../doc/; make ) || ( cd ../doc/; make )
+

@@ -1,0 +1,94 @@
+\usepackage[latin2]{inputenc}
+\def\magyarOptions{defaults=hu-min}
+\usepackage[magyar]{babel}
+\usepackage[ps2pdf,
+            colorlinks=true,
+            linkcolor=black,
+            unicode,
+            bookmarks=true,
+            hyperindex=true
+           ]{hyperref}
+\usepackage{calc}
+\usepackage[T1]{fontenc}
+\usepackage{fancyhdr}
+\usepackage{amsmath,amssymb}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage[margin=2cm]{geometry}
+\usepackage{titlesec}
+\usepackage{epsfig}
+\usepackage{color}
+\usepackage{pstricks}
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{verbatim}
+\usepackage{longtable}
+
+
+\usepackage{highlight}
+\renewcommand{\hlkwa}[1]{\textcolor[rgb]{0,0,0}{\textit{#1}}}
+\renewcommand{\hlkwc}[1]{\textcolor[rgb]{0,0.4,0}{\textit{#1}}}
+
+\addtolength{\voffset}{-1cm}
+
+\usepackage{fedlap}
+
+\csapat{foobar}{22}
+\konzulens{dr. Konzulens Géza}
+\datum{\today}
+
+\taga{Gipsz Jakab}{NETPUNK}{foo@bar.baz}
+\tagb{}{}{}
+\tagc{}{}{}
+\tagd{}{}{}
+
+\setlength{\headheight}{0em}
+\setlength{\headsep}{2em}
+
+
+\fancyhf{}
+\fancyhead[OL] { \leftmark{} }
+\fancyhead[OR] { \tmpcsapat }
+\fancyfoot[OC] { \thepage }
+\fancyfoot[OR] { \tiny Nyomtatva: \tmpdatum }
+\pagestyle{fancy}
+
+
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries\scshape}{\thesection.}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\scshape}{\thesubsection.}{1em}{}
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries}{\thesubsubsection.}{1em}{}
+\titleformat{\ssssection}
+  {\normalfont\normalsize\bfseries}{\thessssection.}{1em}{}
+
+\newcommand{\regg}{\textsuperscript{\textregistered}} 
+\newcommand{\oszt}[1]{\subsubsection{#1}\label{oszt:#1}} 
+\newcommand{\Oszt}[1]{#1$_\text{[\ref{oszt:#1}]}$} 
+
+\makeatletter
+
+\newcounter{ssssection}[subsubsection]
+\def\ssssectionmark#1{}
+\def\thessssection{\thesubsubsection .\arabic{ssssection}}
+\def\ssssection{\@startsection{ssssection}{4}{\z@}{-3.25ex plus -1 ex minus -.2ex}{1.5ex plus .2ex}{\normalsize\bf}}
+\def\l@ssssection{\@dottedtocline{4}{4.8em}{4.2em}}
+\makeatother
+
+\stepcounter{secnumdepth}
+\stepcounter{secnumdepth}
+\stepcounter{tocdepth}
+
+
+
+\lstdefinelanguage{ebnf}%
+    {%
+     morecomment=[s]{(*}{*)},%
+     morestring=[b]",%
+     morestring=[b]',%
+     morekeywords={[,],\{,\},(,)},%
+     moreenkeywords={=}%
+}
