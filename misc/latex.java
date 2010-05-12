@@ -1,16 +1,6 @@
-/**
- * @file Doclet osztály, ami LaTeX kimenetet gyárt.
- *
- * javac -classpath /usr/lib/jvm/java-6-sun-1.6.0.15/lib/tools.jar latex.java
- * 
- * 
- * repos/src$ mv build/latex.class . ; javadoc -doclet latex -classpath
- * /usr/lib/jvm/java-6-sun-1.6.0.15/lib/tools.jar -private `ls *.java |grep -v
- * Skel|gerp -v latex` | iconv -t latin2 | sed -e '1,/==== CUT/ d' >
- * ../doc/jdoc.tex && ( cd ../doc/; make ) || ( cd ../doc/; make )
- * 
- */
+
 import com.sun.javadoc.*;
+import java.util.Arrays;
 
 public class latex extends Doclet {
 
@@ -18,23 +8,25 @@ public class latex extends Doclet {
 		System.out.println("==== CUT HERE =====");
 
 		ClassDoc[] classes = root.classes();
+		Arrays.sort(classes);
 		for (ClassDoc cd : classes) {
 			System.out.println("\\oszt{" + cd.name() + "}");
-			if (cd.isInterface())
+			if (cd.isInterface()) {
 				System.out.println("Interfész.");
-			else if (cd.isAbstract())
+			} else if (cd.isAbstract()) {
 				System.out.println("Absztrakt osztály.");
+			}
 
 			System.out.println("\\begin{description}");
 			System.out.println("\\item[Felelősség]");
-			System.out.println(cd.commentText());
-			if (cd.commentText().length() < 5)
+			System.out.println(cd.commentText().replace('\n', ' '));
+			if (cd.commentText().length() < 5) {
 				System.out.println(" % TODO");
+			}
 			System.out.println("\\item[Ősosztályok] " + getSupers(cd) + ".");
 			System.out.println("\\item[Interfészek] " + getIfaces(cd));
 			if (!cd.isInterface()) {
-				System.out
-						.println("\\item[Attribútumok]$\\ $\n\\begin{description}");
+				System.out.println("\\item[Attribútumok]$\\ $\n\\begin{description}");
 				printFields(cd.fields());
 				System.out.println("\\end{description}");
 			}
@@ -44,12 +36,14 @@ public class latex extends Doclet {
 			System.out.println("\\end{description}");
 			System.out.println();
 		}
+		System.out.println("==== END CUT HERE =====");
 		return true;
 	}
 
 	private static String getIfaces(ClassDoc cd) {
 		ClassDoc[] ifs = cd.interfaces();
 		String s = null;
+		Arrays.sort(ifs);
 		for (ClassDoc iface : ifs) {
 			s = (s == null ? "" : s + ", ") + iface.name();
 		}
@@ -67,30 +61,69 @@ public class latex extends Doclet {
 	}
 
 	private static void printFields(FieldDoc[] mems) {
+		Arrays.sort(mems);
 		for (FieldDoc mem : mems) {
 			System.out.print("\t\\item[\\texttt{" + mem.modifiers() + " "
-					+ mem.type().simpleTypeName() + " " + mem.qualifiedName()
-					+ "}] ");
-			if (mem.commentText().length() < 5)
+				+ getTypeName(mem.type()) + " " + mem.name()
+				+ "}] ");
+			System.out.println(mem.commentText().replace('\n', ' '));
+			if (mem.commentText().length() < 5) {
 				System.out.println(" % TODO");
-			System.out.println(mem.commentText());
+			}
 		}
-		if (mems.length == 0)
+		if (mems.length == 0) {
 			System.out.println("(nincs)");
+		}
 	}
 
 	static void printMembers(MethodDoc[] mems) {
+		Arrays.sort(mems);
 		for (MethodDoc mem : mems) {
 			if (mem.name().compareTo("toString") != 0) {
 				System.out.print("\t\\item[\\texttt{" + mem.modifiers() + " "
-						+ mem.returnType().simpleTypeName() + " "
-						+ mem.toString() + "}] ");
-				if (mem.commentText().length() < 5)
+					+ getTypeName(mem.returnType()) + " "
+					+ mem.name() + "(" + getParams(mem) + ")}] ");
+				System.out.println(mem.commentText().replace('\n', ' '));
+				if (mem.commentText().length() < 5) {
 					System.out.println(" % TODO");
-				System.out.println(mem.commentText());
+				}
 			}
 		}
-		if (mems.length == 0)
+		if (mems.length == 0) {
 			System.out.println("(nincs)");
+		}
+	}
+
+	static private String getTypeName(Type t) {
+		String name = t.simpleTypeName();
+		String par = "";
+		try {
+			TypeVariable[] args = t.asClassDoc().typeParameters();
+			for (TypeVariable arg : args) {
+				if (par.length() > 0) {
+					par += ", ";
+				}
+				par += getTypeName(arg);
+			}
+		} catch (Exception e) {
+			par = "";
+		}
+		if (par.length() > 0) {
+			name += "<" + par + ">";
+		}
+        name += t.dimension();
+		return name;
+	}
+
+	private static String getParams(MethodDoc mem) {
+		Parameter[] pars = mem.parameters();
+		String ret = "";
+		for (Parameter p : pars) {
+			if (ret.length() > 0) {
+				ret += ", ";
+			}
+			ret += getTypeName(p.type()) + " " + p.name();
+		}
+		return ret;
 	}
 }
