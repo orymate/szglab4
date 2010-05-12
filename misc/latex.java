@@ -1,9 +1,9 @@
+
 /**
  * $ javac -classpath /usr/lib/jvm/java-6-sun/lib/tools.jar latex.java 
- * $javadoc -private -doclet latex ../src/{controller,view}/*.java | \
+ * $ javadoc -private -doclet latex ../src/{controller,view}/*.java | \
  *   iconv -t latin2 | sed -e '1,/==== CUT/ d' -e '/==== END/,$ d' >doc.tex
  */
-
 import com.sun.javadoc.*;
 import java.util.Arrays;
 
@@ -69,15 +69,14 @@ public class latex extends Doclet {
 		Arrays.sort(mems);
 		for (FieldDoc mem : mems) {
 			System.out.print("\t\\item[\\texttt{" + mem.modifiers() + " "
-				+ getTypeName(mem.type()) + " " + mem.name()
-				+ "}] ");
+				+ getTypeName(mem.type()) + " " + mem.name().replace("_", "\\_") + "}] ");
 			System.out.println(mem.commentText().replace('\n', ' '));
 			if (mem.commentText().length() < 5) {
 				System.out.println(" % TODO");
 			}
 		}
 		if (mems.length == 0) {
-			System.out.println("(nincs)");
+			System.out.println("\\item[] (nincs)");
 		}
 	}
 
@@ -87,7 +86,7 @@ public class latex extends Doclet {
 			if (mem.name().compareTo("toString") != 0) {
 				System.out.print("\t\\item[\\texttt{" + mem.modifiers() + " "
 					+ getTypeName(mem.returnType()) + " "
-					+ mem.name() + "(" + getParams(mem) + ")}] ");
+					+ mem.name().replace("_", "\\_") + "(" + getParams(mem).replace("_", "\\_") + ")}] ");
 				System.out.println(mem.commentText().replace('\n', ' '));
 				if (mem.commentText().length() < 5) {
 					System.out.println(" % TODO");
@@ -95,7 +94,7 @@ public class latex extends Doclet {
 			}
 		}
 		if (mems.length == 0) {
-			System.out.println("(nincs)");
+			System.out.println("\\item[] (nincs)");
 		}
 	}
 
@@ -116,7 +115,7 @@ public class latex extends Doclet {
 		if (par.length() > 0) {
 			name += "<" + par + ">";
 		}
-        name += t.dimension();
+		name += t.dimension();
 		return name;
 	}
 
@@ -129,6 +128,6 @@ public class latex extends Doclet {
 			}
 			ret += getTypeName(p.type()) + " " + p.name();
 		}
-		return ret;
+		return ret.replace("_", "\\_");
 	}
 }
