@@ -1,3 +1,8 @@
+/**
+ * $ javac -classpath /usr/lib/jvm/java-6-sun/lib/tools.jar latex.java 
+ * $javadoc -private -doclet latex ../src/{controller,view}/*.java | \
+ *   iconv -t latin2 | sed -e '1,/==== CUT/ d' -e '/==== END/,$ d' >doc.tex
+ */
 
 import com.sun.javadoc.*;
 import java.util.Arrays;
