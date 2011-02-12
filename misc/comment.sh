@@ -9,8 +9,7 @@ printf "%-40s%8s%8s%8s\n" "File name" "LOC" "Comment" "SLOC"
 while [ "$1" != '' ]
 do
     this_loc=$(wc -l < "$1")
-    this_comment=$(awk '/\/\// {print;}
-    /\/\*/, /\*\// {print;}' "$1" | wc -l)
+    this_comment=$(awk '/\/\*/, /\*\// {print;next;} /\/\// {print;}' "$1" | wc -l)
     this_empty=$(tr -d '\t ' < "$1" | grep '^$' | wc -l)
     this_sloc=$(($this_loc-$this_comment-$this_empty))
     printf "%-40s%8d%8d%8d\n" "$1" $this_loc $this_comment $this_sloc
